@@ -5,7 +5,7 @@ import type { AlgWithAuf, FlashCard, TestCase } from '@/data/types';
 import { RecognitionTrainer } from './recognition-trainer';
 
 const defaultFlashCardMap: Record<string, FlashCard<AlgWithAuf>> = {};
-pllAlgs.slice(0, 1).forEach((alg) =>
+pllAlgs.forEach((alg) =>
   [...new Array(4)].forEach((_, i) => {
     const name = `${alg.name}-${i}`;
     defaultFlashCardMap[name] = {

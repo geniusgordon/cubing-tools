@@ -4,7 +4,7 @@ import { RecognitionTrainer } from '../recognition-trainer';
 import { CollAnswerOptions } from './coll-answer-options';
 
 const defaultFlashCardMap: Record<string, FlashCard<AlgWithAuf>> = {};
-collAlgs.slice(0, 1).forEach((alg) =>
+collAlgs.forEach((alg) =>
   [...new Array(4)].forEach((_, i) => {
     const name = `${alg.name}-${i}`;
     defaultFlashCardMap[name] = {
@@ -28,7 +28,10 @@ function checkIsCorrect(case_: TestCase, guess: string | null): boolean {
   }
   const group = case_.alg.name.split('/')[0];
   const options = collGroups[group].map((name) => `${group}/${name}`);
-  return options[parseInt(guess) - 1] === case_.alg.name;
+  // case_.alg.name carries an AUF suffix (e.g. "U/BBFF-0"); the option names
+  // don't ("U/BBFF"). Strip the trailing "-<auf>" so the comparison can match.
+  const caseName = case_.alg.name.replace(/-\d+$/, '');
+  return options[parseInt(guess) - 1] === caseName;
 }
 
 export default function CollRecognitionTrainer() {

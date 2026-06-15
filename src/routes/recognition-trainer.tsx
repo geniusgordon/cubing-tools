@@ -77,7 +77,11 @@ export function RecognitionTrainer({
 
   const takeGuess = useCallback(
     (guess: string) => {
-      const flashCard = flashCardMap[currentCase.alg.name];
+      // fall back to the default card when a persisted localStorage map
+      // predates a key (e.g. after the deck grows) — keeps guessing working
+      const flashCard =
+        flashCardMap[currentCase.alg.name] ??
+        defaultFlashCardMap[currentCase.alg.name];
       if (!flashCard) {
         return;
       }
@@ -91,7 +95,14 @@ export function RecognitionTrainer({
         [currentCase.alg.name]: { ...flashCard, deficiency: newDeficiency },
       });
     },
-    [currentCase, flashCardMap, gamma, checkIsCorrect, setFlashCardMap],
+    [
+      currentCase,
+      flashCardMap,
+      defaultFlashCardMap,
+      gamma,
+      checkIsCorrect,
+      setFlashCardMap,
+    ],
   );
 
   const handleKeyup = useCallback(
