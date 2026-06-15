@@ -52,9 +52,11 @@ export function RecognitionTrainer({
     (cn: ColorNeutrality) => {
       const c = randomChoice(
         cases,
-        cases.map(name => flashCardMap[name].deficiency),
+        // fall back to the default deficiency if a persisted localStorage map
+        // is missing a key (stale shape) — avoids reading `.deficiency` of undefined
+        cases.map(name => flashCardMap[name]?.deficiency ?? 1),
       );
-      const { data } = flashCardMap[c];
+      const { data } = flashCardMap[c] ?? defaultFlashCardMap[c];
       return generateCase(data, { cn, preAuf: data.preAuf });
     },
     [cases, flashCardMap],
