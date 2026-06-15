@@ -127,3 +127,15 @@ function applyToken(facelets: Facelets, token: Token): Facelets {
 export function applyAlg(facelets: Facelets, alg: string): Facelets {
   return tokenize(alg).reduce(applyToken, facelets);
 }
+
+/** Reverse the token list and invert each amount (1<->3, 2 stays). */
+export function invert(alg: string): Token[] {
+  return tokenize(alg)
+    .map((t) => ({ move: t.move, amount: t.amount === 2 ? 2 : t.amount === 1 ? 3 : 1 }))
+    .reverse();
+}
+
+/** Render a "case": the state that `alg` solves = inverse(alg) on solved. */
+export function applyCase(alg: string): Facelets {
+  return invert(alg).reduce(applyToken, SOLVED);
+}

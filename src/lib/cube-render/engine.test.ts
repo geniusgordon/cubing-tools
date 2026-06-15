@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SLOTS, SOLVED, applyAlg } from './engine';
+import { SLOTS, SOLVED, applyAlg, applyCase } from './engine';
 import { FACES } from './types';
 
 describe('slot table', () => {
@@ -73,5 +73,22 @@ describe('move engine — physical direction (ground truth)', () => {
   it('y brings R to F', () => {
     const after = applyAlg(SOLVED, 'y');
     for (let i = 18; i < 27; i++) expect(after[i]).toBe('R'); // F face = indices 18..26
+  });
+});
+
+describe('applyCase = inverse applied to solved', () => {
+  it('applyCase(X) equals applyAlg(SOLVED, inverse(X))', () => {
+    // A case and the forward alg are inverses: applying the forward alg
+    // to a case-state returns to solved.
+    const caseState = applyCase("R U R' U'");
+    const back = applyAlg(caseState, "R U R' U'");
+    expect(back).toEqual(SOLVED);
+  });
+  it('PLL preserves U orientation: T-perm case keeps the U face all U', () => {
+    const t = applyCase("R U R' U' R' F R2 U' R' U' R U R' F'");
+    for (let i = 0; i < 9; i++) expect(t[i]).toBe('U');
+  });
+  it('a non-trivial case is not solved', () => {
+    expect(applyCase("R U R' U'")).not.toEqual(SOLVED);
   });
 });
