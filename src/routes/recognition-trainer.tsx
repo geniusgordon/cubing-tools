@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import { AppHeader } from '@/components/app-header';
 import { CubeImage } from '@/components/cube-image';
+import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useEventListener, useSettings, useLocalStorage } from '@/hooks';
@@ -143,6 +144,10 @@ export function RecognitionTrainer({
         >
           <CubeImage alg={caseToString(currentCase)} size={200} />
         </button>
+
+        <Button onClick={() => generateNextCase(settings.colorNeutrality)}>
+          Next
+        </Button>
 
         <div className="flex flex-col items-center gap-2">
           <Label>Color Neutrality</Label>
