@@ -83,6 +83,9 @@ export interface Token {
 }
 
 /** Tokenize WCA notation; ignores spaces, parens, and unknown chars. */
+// Note: only single-letter moves are recognized. Wide moves use the lowercase
+// forms (r,u,f,l,d,b); `Rw`-style notation and numeric prefixes (e.g. 3Rw) are
+// not in our data and are silently ignored char-by-char.
 export function tokenize(alg: string): Token[] {
   const tokens: Token[] = [];
   let i = 0;

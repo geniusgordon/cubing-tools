@@ -36,6 +36,21 @@ describe('slot table', () => {
   });
 });
 
+describe('move engine — slice/rotation direction identities', () => {
+  // These standard cube identities pin the M/E/S slice and x/y/z rotation
+  // directions directly, so a wrong cwq sign would fail here even when the
+  // order-4 structural tests still pass.
+  it("x = R M' L'", () => {
+    expect(applyAlg(SOLVED, 'x')).toEqual(applyAlg(SOLVED, "R M' L'"));
+  });
+  it("y = U E' D'", () => {
+    expect(applyAlg(SOLVED, 'y')).toEqual(applyAlg(SOLVED, "U E' D'"));
+  });
+  it("z = F S B'", () => {
+    expect(applyAlg(SOLVED, 'z')).toEqual(applyAlg(SOLVED, "F S B'"));
+  });
+});
+
 describe('move engine — structural identities', () => {
   const solved = SOLVED;
   it('U^4 = identity', () => {
