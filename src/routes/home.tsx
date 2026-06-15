@@ -1,30 +1,36 @@
 import { Link } from 'react-router';
 import { AppHeader } from '@/components/app-header';
+import { CubeImage } from '@/components/cube-image';
 import { Card, CardContent } from '@/components/ui/card';
 
 const TRAINERS = [
   {
     title: 'PLL Recognition Trainer',
-    image: 'https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=ll',
     to: '/trainers/recognition/pll',
+    alg: '',
+    view: undefined as 'plan' | undefined,
+    stage: 'll',
   },
   {
     title: 'COLL Recognition Trainer',
-    image:
-      'https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=coll',
     to: '/trainers/recognition/coll',
+    alg: '',
+    view: 'plan' as const,
+    stage: 'coll',
   },
   {
     title: 'Cross Trainer',
-    image:
-      'https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=cross-x2',
     to: '/trainers/cross',
+    alg: '',
+    view: undefined as 'plan' | undefined,
+    stage: 'cross-x2',
   },
   {
     title: 'ZBLL Trainer',
-    image:
-      "https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=ll&case=(RUR'U')(RU'RU2R2)(U'RUR'U')(R2U'R2U')",
     to: '/trainers/zbll',
+    alg: "(R U R' U') (R U' R U2 R2) (U' R U R' U') (R2 U' R2 U')",
+    view: 'plan' as const,
+    stage: 'll',
   },
 ];
 
@@ -37,7 +43,12 @@ export default function Home() {
           <Link key={t.to} to={t.to} className="no-underline">
             <Card className="transition-colors hover:bg-accent">
               <CardContent className="flex flex-col items-center gap-4 p-6">
-                <img src={t.image} alt="" className="h-32 w-32" />
+                <CubeImage
+                  alg={t.alg}
+                  view={t.view}
+                  stage={t.stage}
+                  size={128}
+                />
                 <h2 className="text-center text-lg font-medium">{t.title}</h2>
               </CardContent>
             </Card>

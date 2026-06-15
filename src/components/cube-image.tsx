@@ -1,7 +1,12 @@
-import { useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Skeleton } from '@/components/ui/skeleton';
-import { toQueryString } from '@/lib/cube';
+import { useMemo } from 'react';
+import {
+  applyCase,
+  maskedColors,
+  planLayout,
+  PLAN_VIEWBOX,
+  cube3dLayout,
+  CUBE3D_VIEWBOX,
+} from '@/lib/cube-render';
 
 interface CubeImageProps {
   size?: number;
@@ -11,31 +16,46 @@ interface CubeImageProps {
 }
 
 export function CubeImage({ size = 200, alg, view, stage }: CubeImageProps) {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    setLoading(true);
-  }, [alg]);
-
-  const queryString = toQueryString({
-    fmt: 'svg',
-    bg: 't',
-    case: alg,
-    view,
-    stage,
-    size,
-  });
+  const svg = useMemo(() => {
+    const colors = maskedColors(applyCase(alg), stage);
+    if (view === 'plan') {
+      return { viewBox: PLAN_VIEWBOX, kind: 'plan' as const, cells: planLayout(colors) };
+    }
+    return { viewBox: CUBE3D_VIEWBOX, kind: '3d' as const, quads: cube3dLayout(colors) };
+  }, [alg, view, stage]);
 
   return (
-    <div className="relative" style={{ height: size, width: size }}>
-      {loading && <Skeleton className="absolute inset-0 rounded-md" />}
-      <img
-        src={`https://cube.crider.co.uk/visualcube.php?${queryString}`}
-        alt=""
-        onLoad={() => setLoading(false)}
-        style={{ height: size, width: size }}
-        className={cn('transition-opacity', loading && 'opacity-0')}
-      />
-    </div>
+    <svg
+      width={size}
+      height={size}
+      viewBox={`0 0 ${svg.viewBox} ${svg.viewBox}`}
+      role="img"
+      aria-label="cube"
+    >
+      {svg.kind === 'plan'
+        ? svg.cells.map((c, i) => (
+            <rect
+              key={i}
+              x={c.x}
+              y={c.y}
+              width={c.w}
+              height={c.h}
+              rx={1}
+              fill={c.fill}
+              stroke="#222"
+              strokeWidth={0.6}
+            />
+          ))
+        : svg.quads.map((q, i) => (
+            <polygon
+              key={i}
+              points={q.points.map(([x, y]) => `${x},${y}`).join(' ')}
+              fill={q.fill}
+              stroke="#222"
+              strokeWidth={0.6}
+              strokeLinejoin="round"
+            />
+          ))}
+    </svg>
   );
 }
