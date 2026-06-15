@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SLOTS, SOLVED } from './engine';
+import { SLOTS, SOLVED, applyAlg } from './engine';
 import { FACES } from './types';
 
 describe('slot table', () => {
@@ -33,5 +33,45 @@ describe('slot table', () => {
     FACES.forEach((face, f) => {
       for (let i = 0; i < 9; i++) expect(SOLVED[f * 9 + i]).toBe(face);
     });
+  });
+});
+
+describe('move engine — structural identities', () => {
+  const solved = SOLVED;
+  it('U^4 = identity', () => {
+    expect(applyAlg(solved, 'U U U U')).toEqual(solved);
+  });
+  it('x^4 = identity', () => {
+    expect(applyAlg(solved, 'x x x x')).toEqual(solved);
+  });
+  it('y^4 = identity', () => {
+    expect(applyAlg(solved, 'y y y y')).toEqual(solved);
+  });
+  it('sexy move (R U R\' U\') x6 = identity', () => {
+    expect(applyAlg(solved, "R U R' U' R U R' U' R U R' U' R U R' U' R U R' U' R U R' U'")).toEqual(solved);
+  });
+  it('r r\' = identity', () => {
+    expect(applyAlg(solved, "r r'")).toEqual(solved);
+  });
+  it('M M\' = identity', () => {
+    expect(applyAlg(solved, "M M'")).toEqual(solved);
+  });
+  it('S S\' = identity', () => {
+    expect(applyAlg(solved, "S S'")).toEqual(solved);
+  });
+});
+
+describe('move engine — physical direction (ground truth)', () => {
+  // After x (whole-cube rotation following R, clockwise), the Front face
+  // rotates up to the top, so every U facelet now shows F's color.
+  it('x brings F to U', () => {
+    const after = applyAlg(SOLVED, 'x');
+    for (let i = 0; i < 9; i++) expect(after[i]).toBe('F'); // U face = indices 0..8
+  });
+  // After y (whole-cube rotation following U, clockwise from top), the Right
+  // face comes to the Front, so every F facelet shows R's color.
+  it('y brings R to F', () => {
+    const after = applyAlg(SOLVED, 'y');
+    for (let i = 18; i < 27; i++) expect(after[i]).toBe('R'); // F face = indices 18..26
   });
 });
