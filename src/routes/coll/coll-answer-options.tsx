@@ -16,7 +16,7 @@ export function CollAnswerOptions({
   takeGuess,
 }: CollAnswerOptionsProps) {
   const group = currentCase.alg.name.split('/')[0];
-  const options = collGroups[group].map(name => ({
+  const options = collGroups[group].map((name) => ({
     name: `${group}/${name}`,
     alg: collMap[group][name],
   }));

@@ -44,7 +44,7 @@ export default function CrossTrainer() {
           <Label htmlFor="level">Level</Label>
           <Select
             value={String(settings.crossLevel)}
-            onValueChange={v => updateSettings({ crossLevel: Number(v) })}
+            onValueChange={(v) => updateSettings({ crossLevel: Number(v) })}
           >
             <SelectTrigger id="level" className="w-24">
               <SelectValue />

@@ -54,12 +54,12 @@ export function RecognitionTrainer({
         cases,
         // fall back to the default deficiency if a persisted localStorage map
         // is missing a key (stale shape) — avoids reading `.deficiency` of undefined
-        cases.map(name => flashCardMap[name]?.deficiency ?? 1),
+        cases.map((name) => flashCardMap[name]?.deficiency ?? 1),
       );
       const { data } = flashCardMap[c] ?? defaultFlashCardMap[c];
       return generateCase(data, { cn, preAuf: data.preAuf });
     },
-    [cases, flashCardMap],
+    [cases, flashCardMap, defaultFlashCardMap],
   );
 
   const [currentCase, setCurrentCase] = useState<TestCase>(() =>
@@ -140,7 +140,7 @@ export function RecognitionTrainer({
             onValueChange={handleCnChange}
             className="flex flex-row gap-4"
           >
-            {CN_OPTIONS.map(o => (
+            {CN_OPTIONS.map((o) => (
               <div key={o.value} className="flex items-center gap-2">
                 <RadioGroupItem value={o.value} id={`cn-${o.value}`} />
                 <Label htmlFor={`cn-${o.value}`}>{o.label}</Label>

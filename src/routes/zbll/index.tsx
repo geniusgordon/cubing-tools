@@ -13,9 +13,9 @@ import { SessionHistory } from './session-history';
 type ZbllFlashCard = FlashCard<{ alg: Alg; count: number }>;
 
 const defaultFlashCardMap: Record<string, ZbllFlashCard> = {};
-ollGroups.forEach(oll => {
-  collGroups[oll].forEach(coll => {
-    Object.keys(zbllMap[oll][coll]).forEach(zbll => {
+ollGroups.forEach((oll) => {
+  collGroups[oll].forEach((coll) => {
+    Object.keys(zbllMap[oll][coll]).forEach((zbll) => {
       const name = `${oll}/${coll}/${zbll}`;
       defaultFlashCardMap[name] = {
         data: { alg: { name, alg: '' }, count: 0 },
@@ -43,13 +43,13 @@ export default function ZbllTrainer() {
   const [currentCase, setCurrentCase] = useState<Alg | null>(null);
 
   const cases = useMemo(
-    () => Object.keys(selectedCases).filter(name => selectedCases[name]),
+    () => Object.keys(selectedCases).filter((name) => selectedCases[name]),
     [selectedCases],
   );
 
   const pickCaseFromFlashCards = useCallback((): Alg | null => {
     if (cases.length === 0) return null;
-    const probs = cases.map(c =>
+    const probs = cases.map((c) =>
       flashCardMap[c].data.count === 0 ? 1000 : flashCardMap[c].deficiency,
     );
     const c = randomChoice(cases, probs);
@@ -89,7 +89,13 @@ export default function ZbllTrainer() {
       // and produces the next case (matches original behavior — avoids
       // double-generation).
     },
-    [currentCase, flashCardMap, sessionHistory, setSessionHistory, setFlashCardMap],
+    [
+      currentCase,
+      flashCardMap,
+      sessionHistory,
+      setSessionHistory,
+      setFlashCardMap,
+    ],
   );
 
   function handleHistoryDelete(index: number) {

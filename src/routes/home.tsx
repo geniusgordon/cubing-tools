@@ -5,8 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 const TRAINERS = [
   {
     title: 'PLL Recognition Trainer',
-    image:
-      'https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=ll',
+    image: 'https://cube.crider.co.uk/visualcube.php?fmt=svg&size=200&stage=ll',
     to: '/trainers/recognition/pll',
   },
   {
@@ -34,7 +33,7 @@ export default function Home() {
     <>
       <AppHeader />
       <main className="mx-auto grid max-w-2xl grid-cols-1 gap-6 p-6 sm:grid-cols-2">
-        {TRAINERS.map(t => (
+        {TRAINERS.map((t) => (
           <Link key={t.to} to={t.to} className="no-underline">
             <Card className="transition-colors hover:bg-accent">
               <CardContent className="flex flex-col items-center gap-4 p-6">

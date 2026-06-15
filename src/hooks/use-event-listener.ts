@@ -1,11 +1,11 @@
 import React from 'react';
 
-function useEventListener(
-  eventName: string,
-  handler: (e: any) => void,
-  element = document,
+function useEventListener<K extends keyof DocumentEventMap>(
+  eventName: K,
+  handler: (e: DocumentEventMap[K]) => void,
+  element: Document = document,
 ) {
-  const savedHandler = React.useRef<(e: any) => void>(handler);
+  const savedHandler = React.useRef(handler);
 
   React.useEffect(() => {
     savedHandler.current = handler;
@@ -16,9 +16,9 @@ function useEventListener(
 
     if (!isSupported) return;
 
-    function eventListener(e: any) {
+    const eventListener = (e: DocumentEventMap[K]) => {
       savedHandler.current(e);
-    }
+    };
 
     element.addEventListener(eventName, eventListener);
 

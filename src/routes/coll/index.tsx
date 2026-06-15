@@ -4,7 +4,7 @@ import { RecognitionTrainer } from '../recognition-trainer';
 import { CollAnswerOptions } from './coll-answer-options';
 
 const defaultFlashCardMap: Record<string, FlashCard<AlgWithAuf>> = {};
-collAlgs.slice(0, 1).forEach(alg =>
+collAlgs.slice(0, 1).forEach((alg) =>
   [...new Array(4)].forEach((_, i) => {
     const name = `${alg.name}-${i}`;
     defaultFlashCardMap[name] = {
@@ -27,7 +27,7 @@ function checkIsCorrect(case_: TestCase, guess: string | null): boolean {
     return false;
   }
   const group = case_.alg.name.split('/')[0];
-  const options = collGroups[group].map(name => `${group}/${name}`);
+  const options = collGroups[group].map((name) => `${group}/${name}`);
   return options[parseInt(guess) - 1] === case_.alg.name;
 }
 

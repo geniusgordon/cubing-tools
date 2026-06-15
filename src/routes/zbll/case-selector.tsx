@@ -33,7 +33,7 @@ export function CaseSelector({
 
   const selectedOllCollAlgs = useMemo(() => {
     if (!oll) return null;
-    return collGroups[oll].map(c => ({
+    return collGroups[oll].map((c) => ({
       name: `${oll}/${c}`,
       alg: collMap[oll][c],
     }));
@@ -42,7 +42,7 @@ export function CaseSelector({
   const selectedCollZbllAlgs = useMemo(() => {
     if (!oll || !coll) return null;
     const c = coll.split('/')[1];
-    return Object.keys(zbllMap[oll][c]).map(zbll => ({
+    return Object.keys(zbllMap[oll][c]).map((zbll) => ({
       name: `${oll}/${c}/${zbll}`,
       alg: zbllMap[oll][c][zbll][0],
     }));
@@ -50,7 +50,7 @@ export function CaseSelector({
 
   const selectedCount = useMemo(() => {
     const count: Record<string, number> = {};
-    Object.keys(cases).forEach(key => {
+    Object.keys(cases).forEach((key) => {
       const parts = key.split('/');
       const ollKey = parts[0];
       const collKey = `${parts[0]}/${parts[1]}`;
@@ -72,18 +72,18 @@ export function CaseSelector({
   }, []);
 
   const handleZbllSelect = useCallback((alg: Alg) => {
-    setCases(prev => ({ ...prev, [alg.name]: !prev[alg.name] }));
+    setCases((prev) => ({ ...prev, [alg.name]: !prev[alg.name] }));
   }, []);
 
   // All/None operate on an OLL (parts.length === 1) or a COLL prefix.
   const bulkSet = useCallback((alg: Alg, value: boolean) => {
     const parts = alg.name.split('/');
     const ollKey = parts[0];
-    setCases(prev => {
+    setCases((prev) => {
       const next = { ...prev };
       const colls = parts.length === 1 ? collGroups[ollKey] : [parts[1]];
-      colls.forEach(c => {
-        Object.keys(zbllMap[ollKey][c]).forEach(zbll => {
+      colls.forEach((c) => {
+        Object.keys(zbllMap[ollKey][c]).forEach((zbll) => {
           next[`${ollKey}/${c}/${zbll}`] = value;
         });
       });
@@ -101,7 +101,7 @@ export function CaseSelector({
   );
 
   return (
-    <Dialog open={open} onOpenChange={o => !o && onClose()}>
+    <Dialog open={open} onOpenChange={(o) => !o && onClose()}>
       <DialogContent
         showCloseButton={false}
         className="flex max-h-[90vh] max-w-4xl flex-col gap-0 overflow-hidden p-0"
@@ -121,7 +121,7 @@ export function CaseSelector({
 
         <ScrollArea className="max-h-[75vh] p-4">
           <div className="flex flex-wrap justify-center">
-            {ollAlgs.map(alg => (
+            {ollAlgs.map((alg) => (
               <AlgGroup
                 key={alg.name}
                 active={alg.name === oll}
@@ -137,7 +137,7 @@ export function CaseSelector({
 
           {selectedOllCollAlgs && (
             <div className="flex flex-wrap justify-center border-t pt-2">
-              {selectedOllCollAlgs.map(alg => (
+              {selectedOllCollAlgs.map((alg) => (
                 <AlgGroup
                   key={alg.name}
                   active={alg.name === coll}
@@ -154,7 +154,7 @@ export function CaseSelector({
 
           {selectedCollZbllAlgs && (
             <div className="flex flex-wrap justify-center gap-1 border-t pt-2">
-              {selectedCollZbllAlgs.map(alg => (
+              {selectedCollZbllAlgs.map((alg) => (
                 <ZbllCase
                   key={alg.name}
                   alg={alg}

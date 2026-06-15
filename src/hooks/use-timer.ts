@@ -14,18 +14,17 @@ interface Args {
   onEnd?: (time: number) => void;
 }
 
-function useTimer({
-  onHold,
-  onStart,
-  onEnd,
-}: Args): { time: number; status: TimerStatus } {
+function useTimer({ onHold, onStart, onEnd }: Args): {
+  time: number;
+  status: TimerStatus;
+} {
   const [time, setTime] = React.useState<number>(0);
   const [status, setStatus] = React.useState<TimerStatus>(TimerStatus.STOPPED);
   const holding = React.useRef<boolean>(false);
 
   const handleInterval = React.useCallback(() => {
     if (status === TimerStatus.RUNNING) {
-      setTime(t => t + 1);
+      setTime((t) => t + 1);
     }
   }, [status]);
 

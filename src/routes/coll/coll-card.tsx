@@ -21,7 +21,7 @@ function checkIsCurrent(
     return false;
   }
   const group = case_.alg.name.split('/')[0];
-  const options = collGroups[group].map(name => `${group}/${name}`);
+  const options = collGroups[group].map((name) => `${group}/${name}`);
   return options[parseInt(guess) - 1] === alg.name;
 }
 

@@ -5,7 +5,7 @@ import type { AlgWithAuf, FlashCard, TestCase } from '@/data/types';
 import { RecognitionTrainer } from './recognition-trainer';
 
 const defaultFlashCardMap: Record<string, FlashCard<AlgWithAuf>> = {};
-pllAlgs.slice(0, 1).forEach(alg =>
+pllAlgs.slice(0, 1).forEach((alg) =>
   [...new Array(4)].forEach((_, i) => {
     const name = `${alg.name}-${i}`;
     defaultFlashCardMap[name] = {
@@ -36,9 +36,12 @@ export default function PllRecognitionTrainer() {
       checkIsCorrect={checkIsCorrect}
       renderAnswerOptions={({ currentCase, currentGuess, takeGuess }) => (
         <div className="flex flex-col items-center gap-2">
-          {pllGroups.map(group => (
-            <div key={group.name} className="flex flex-wrap justify-center gap-2">
-              {group.cases.map(c => {
+          {pllGroups.map((group) => (
+            <div
+              key={group.name}
+              className="flex flex-wrap justify-center gap-2"
+            >
+              {group.cases.map((c) => {
                 const isCurrent = currentGuess === c;
                 const isCorrect = checkIsCorrect(currentCase, currentGuess);
                 return (
@@ -46,7 +49,9 @@ export default function PllRecognitionTrainer() {
                     key={c}
                     onClick={() => takeGuess(c)}
                     className={cn(
-                      isCurrent && isCorrect && 'bg-green-600 hover:bg-green-600',
+                      isCurrent &&
+                        isCorrect &&
+                        'bg-green-600 hover:bg-green-600',
                       isCurrent && !isCorrect && 'bg-red-600 hover:bg-red-600',
                     )}
                   >

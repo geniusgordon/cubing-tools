@@ -63,8 +63,8 @@ export function caseToString(c: TestCase): string {
 
 export function toQueryString(params: Record<string, unknown>): string {
   return Object.keys(params)
-    .filter(key => typeof params[key] !== 'undefined')
-    .map(key => key + '=' + params[key])
+    .filter((key) => typeof params[key] !== 'undefined')
+    .map((key) => key + '=' + params[key])
     .join('&');
 }
 
@@ -73,14 +73,30 @@ export function generateCrossScramble(level: number): Scramble | null {
     return null;
   }
   const moveNames = [
-    'R', 'R2', "R'", 'F', 'F2', "F'", 'L', 'L2', "L'",
-    'B', 'B2', "B'", 'U', 'U2', "U'", 'D', 'D2', "D'",
+    'R',
+    'R2',
+    "R'",
+    'F',
+    'F2',
+    "F'",
+    'L',
+    'L2',
+    "L'",
+    'B',
+    'B2',
+    "B'",
+    'U',
+    'U2',
+    "U'",
+    'D',
+    'D2',
+    "D'",
   ];
   const randomScramble =
     crossScrambles[level - 1][Math.floor(Math.random() * 1000)];
   return randomScramble
     .split('')
-    .map(s => moveNames[s.charCodeAt(0) - 'A'.charCodeAt(0)]);
+    .map((s) => moveNames[s.charCodeAt(0) - 'A'.charCodeAt(0)]);
 }
 
 export function randomChoice<T>(choices: T[], probs: number[]): T {

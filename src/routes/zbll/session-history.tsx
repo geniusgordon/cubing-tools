@@ -48,7 +48,7 @@ export function SessionHistory({
     setSelectedIndex(sessionHistory.length - 1);
   }, [sessionHistory.length]);
 
-  const times = sessionHistory.map(h => h.time);
+  const times = sessionHistory.map((h) => h.time);
   const best = times.length ? Math.min(...times) : null;
   const worst = times.length ? Math.max(...times) : null;
   const ao5 = averageOfN(times, 5);
@@ -136,7 +136,7 @@ export function SessionHistory({
 
       <AlertDialog
         open={alert !== null}
-        onOpenChange={o => !o && setAlert(null)}
+        onOpenChange={(o) => !o && setAlert(null)}
       >
         <AlertDialogContent>
           <AlertDialogHeader>

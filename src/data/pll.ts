@@ -47,7 +47,7 @@ const pllGroups = [
   },
 ];
 
-const pllAlgs: Alg[] = Object.keys(pllMap).map(key => ({
+const pllAlgs: Alg[] = Object.keys(pllMap).map((key) => ({
   name: key,
   alg: pllMap[key],
 }));

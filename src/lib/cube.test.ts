@@ -62,7 +62,7 @@ describe('generateCrossScramble', () => {
     const s = generateCrossScramble(1);
     expect(Array.isArray(s)).toBe(true);
     expect(s!.length).toBeGreaterThan(0);
-    expect(s!.every(m => /^[RLUDFB]2?'?$/.test(m))).toBe(true);
+    expect(s!.every((m) => /^[RLUDFB]2?'?$/.test(m))).toBe(true);
   });
 });
 
