@@ -5,7 +5,6 @@ import {
   averageOfN,
   caseToString,
   generateCrossScramble,
-  toQueryString,
 } from './cube';
 import { ColorNeutrality } from '@/data/types';
 
@@ -44,12 +43,6 @@ describe('caseToString', () => {
       cnRotation: 0,
     });
     expect(s).toBe('UX');
-  });
-});
-
-describe('toQueryString', () => {
-  it('skips undefined values', () => {
-    expect(toQueryString({ a: 1, b: undefined, c: 'x' })).toBe('a=1&c=x');
   });
 });
 

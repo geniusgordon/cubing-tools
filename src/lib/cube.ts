@@ -61,13 +61,6 @@ export function caseToString(c: TestCase): string {
   );
 }
 
-export function toQueryString(params: Record<string, unknown>): string {
-  return Object.keys(params)
-    .filter((key) => typeof params[key] !== 'undefined')
-    .map((key) => key + '=' + params[key])
-    .join('&');
-}
-
 export function generateCrossScramble(level: number): Scramble | null {
   if (level < 1 || level >= 8) {
     return null;
