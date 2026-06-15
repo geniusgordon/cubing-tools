@@ -1,4 +1,4 @@
-import { Alg, AlgMap } from './types';
+import type { Alg, AlgMap } from './types';
 
 interface CollMap {
   [group: string]: AlgMap;
@@ -60,15 +60,15 @@ const collGroups: CollGroups = {
 const ollGroups = ['H', 'Pi', 'U', 'T', 'L'];
 
 const collAlgs: Alg[] = Object.keys(collMap)
-  .map(group =>
-    collGroups[group].map(name => ({
+  .map((group) =>
+    collGroups[group].map((name) => ({
       name: `${group}/${name}`,
       alg: collMap[group][name],
     })),
   )
   .flat();
 
-const ollAlgs = ollGroups.map(group => ({
+const ollAlgs = ollGroups.map((group) => ({
   name: group,
   alg: collMap[group][collGroups[group][0]],
 }));

@@ -1,4 +1,4 @@
-import { Alg, AlgMap } from './types';
+import type { Alg, AlgMap } from './types';
 
 const pllMap: AlgMap = {
   // Ua: "(y2) M2 U M U2 M' U M2",
@@ -47,7 +47,7 @@ const pllGroups = [
   },
 ];
 
-const pllAlgs: Alg[] = Object.keys(pllMap).map(key => ({
+const pllAlgs: Alg[] = Object.keys(pllMap).map((key) => ({
   name: key,
   alg: pllMap[key],
 }));

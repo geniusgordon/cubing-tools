@@ -1,5 +1,4 @@
-export { default as useEventListener } from './useEventListener';
-export { default as useInterval } from './useInterval';
-export { default as useLocalStorage, useSettings } from './useLocalStorage';
-export { default as useTimer, TimerStatus } from './useTimer';
-export { default as useWhyDidYouUpdate } from './useWhyDidYouUpdate';
+export { default as useEventListener } from './use-event-listener';
+export { default as useInterval } from './use-interval';
+export { default as useLocalStorage, useSettings } from './use-local-storage';
+export { default as useTimer, TimerStatus } from './use-timer';
