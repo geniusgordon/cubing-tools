@@ -42,7 +42,7 @@ describe('renderCubeSvg', () => {
     expect(new Set(heads).size).toBe(heads.length); // all distinct
   });
 
-  it('strips a leading whole-cube rotation → clean Ua (3 directed arrows, no corner swaps)', () => {
+  it('factors out a leading whole-cube rotation → clean Ua (3 directed arrows, no corner swaps)', () => {
     const svg = renderCubeSvg({ alg: UA_Y2, view: 'plan', stage: 'll', arrows: 'pll' });
     expect(count(svg, /<line/g)).toBe(3); // 3-edge cycle, not 5 (2 corner + 3 edge)
     expect(count(svg, /<polygon/g)).toBe(3); // 3 directed arrows → 1 head each

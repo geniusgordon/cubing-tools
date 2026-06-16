@@ -1,4 +1,4 @@
-import { applyCase, stripOuterRotations } from './engine';
+import { applyCase } from './engine';
 import { maskedColors } from './stages';
 import { planLayout, PLAN_VIEWBOX } from './layout-plan';
 import { cube3dLayout, CUBE3D_VIEWBOX } from './layout-3d';
@@ -18,16 +18,14 @@ const ARROW_COLOR = '#111';
 /** Render a cube case to a complete, self-contained SVG string (no fonts/text). */
 export function renderCubeSvg(opts: RenderOptions): string {
   const { alg, view, stage, size = 200, arrows } = opts;
+  // The case is rendered exactly as `alg` specifies (whole-cube rotations honored);
+  // computePllArrows factors out the net rotation internally so the arrows stay
+  // clean while remaining consistent with the rendered (possibly rotated) case.
+  const colors = maskedColors(applyCase(alg), stage);
   const isPlan = view === 'plan';
-  const withArrows = isPlan && arrows === 'pll';
-  // For PLL arrows, render the case in canonical orientation (rotations stripped)
-  // so the stickers stay consistent with the rotation-free arrows. computePllArrows
-  // strips rotations internally too.
-  const colorAlg = withArrows ? stripOuterRotations(alg) : alg;
-  const colors = maskedColors(applyCase(colorAlg), stage);
   const viewBox = isPlan ? PLAN_VIEWBOX : CUBE3D_VIEWBOX;
   const body = isPlan ? planBody(colors) : cube3dBody(colors);
-  const overlay = withArrows ? arrowsSvg(computePllArrows(alg)) : '';
+  const overlay = isPlan && arrows === 'pll' ? arrowsSvg(computePllArrows(alg)) : '';
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" ` +
     `viewBox="0 0 ${viewBox} ${viewBox}">${body}${overlay}</svg>`

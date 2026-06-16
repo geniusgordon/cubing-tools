@@ -44,4 +44,13 @@ describe('computePllArrows', () => {
   it('non-PLL input that moves U off the top → no arrows (graceful degrade)', () => {
     expect(computePllArrows('x')).toEqual([]);
   });
+
+  it('factors out a whole-cube rotation: a y-prefixed Ua stays a clean edge 3-cycle', () => {
+    for (const rot of ['(y)', '(y2)', "(y')"]) {
+      const arrows = computePllArrows(`${rot} ${UA_PERM}`);
+      expect(arrows).toHaveLength(3); // no spurious corner swaps from the rotation
+      expect(arrows.every((a) => !a.double)).toBe(true);
+      expect(arrows.every((a) => isEdge(a.from) && isEdge(a.to))).toBe(true);
+    }
+  });
 });

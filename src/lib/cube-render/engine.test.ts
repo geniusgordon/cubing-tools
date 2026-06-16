@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SLOTS, SOLVED, applyAlg, applyCase, permuteSlots, stripOuterRotations } from './engine';
+import { SLOTS, SOLVED, applyAlg, applyCase, permuteSlots } from './engine';
 import { FACES } from './types';
 
 describe('slot table', () => {
@@ -126,33 +126,5 @@ describe('permuteSlots — forward slot-identity permutation', () => {
     // After a single U, the sticker at U-slot 0 is no longer slot 0's own.
     const out = permuteSlots('U');
     expect(out[0]).not.toBe(0);
-  });
-});
-
-describe('stripOuterRotations', () => {
-  it('drops a leading whole-cube rotation', () => {
-    expect(stripOuterRotations("(y2) M2 U M U2 M' U M2")).toBe("M2 U M U2 M' U M2");
-  });
-
-  it('drops trailing rotations and normalizes amounts', () => {
-    expect(stripOuterRotations("y R U R' y'")).toBe("R U R'");
-  });
-
-  it('leaves a rotation-free alg unchanged', () => {
-    expect(stripOuterRotations("R U R' U'")).toBe("R U R' U'");
-  });
-
-  it('keeps mid-alg rotations (only outer ones are stripped)', () => {
-    expect(stripOuterRotations('R y R')).toBe('R y R');
-  });
-
-  it('an all-rotation alg collapses to empty', () => {
-    expect(stripOuterRotations('x y2 z')).toBe('');
-  });
-
-  it('the stripped Ua has the same forward permutation as the rotation-free Ua', () => {
-    expect(permuteSlots(stripOuterRotations("(y2) M2 U M U2 M' U M2"))).toEqual(
-      permuteSlots("M2 U M U2 M' U M2"),
-    );
   });
 });
