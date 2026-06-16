@@ -78,10 +78,10 @@ export const ollCases: OllCase[] = [
   { number: 49, name: 'L 49', category: 'L', alg: "R B' R2 F R2 B R2 F' R" },
   { number: 50, name: 'L 50', category: 'L', alg: "R' F R2 B' R2 F' R2 B R'" },
   { number: 51, name: 'Line 51', category: 'Line', alg: "F U R U' R' U R U' R' F'" },
-  { number: 52, name: 'Line 52', category: 'Line', alg: "R U R' U R d' R U' R' F'" },
+  { number: 52, name: 'Line 52', category: 'Line', alg: "R' U' R U' R' U F' U F R" },
   { number: 53, name: 'L 53', category: 'L', alg: "r' U2 R U R' U' R U R' U r" },
   { number: 54, name: 'L 54', category: 'L', alg: "r U2 R' U' R U R' U' R U' r'" },
   { number: 55, name: 'Line 55', category: 'Line', alg: "R U2 R2 U' R U' R' U2 F R F'" },
   { number: 56, name: 'Line 56', category: 'Line', alg: "r' U' r U' R' U R U' R' U R r' U r" },
-  { number: 57, name: 'Special 57', category: 'Special', alg: "R U R' U' M' U r U' r'" },
+  { number: 57, name: 'Special 57', category: 'Special', alg: "R U R' U' r R' U R U' r'" },
 ];
