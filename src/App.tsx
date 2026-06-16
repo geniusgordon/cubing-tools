@@ -4,6 +4,7 @@ import PllRecognitionTrainer from '@/routes/pll';
 import CollRecognitionTrainer from '@/routes/coll';
 import CrossTrainer from '@/routes/cross';
 import ZbllTrainer from '@/routes/zbll';
+import OllTrainer from '@/routes/oll';
 
 const router = createBrowserRouter(
   [
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
     { path: '/trainers/recognition/coll', element: <CollRecognitionTrainer /> },
     { path: '/trainers/cross', element: <CrossTrainer /> },
     { path: '/trainers/zbll', element: <ZbllTrainer /> },
+    { path: '/trainers/oll', element: <OllTrainer /> },
     { path: '*', element: <Home /> },
   ],
   { basename: '/cubing-tools' },

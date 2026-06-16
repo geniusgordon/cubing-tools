@@ -8,6 +8,7 @@ import PllRecognitionTrainer from '@/routes/pll';
 import CollRecognitionTrainer from '@/routes/coll';
 import CrossTrainer from '@/routes/cross';
 import ZbllTrainer from '@/routes/zbll';
+import OllTrainer from '@/routes/oll';
 
 afterEach(() => {
   cleanup();
@@ -57,5 +58,17 @@ describe('route render smoke tests', () => {
       JSON.stringify({ 'H/BBFF/AsA': true }),
     );
     expect(() => renderRoute(<ZbllTrainer />)).not.toThrow();
+  });
+
+  it('renders OLL trainer without throwing', () => {
+    expect(() => renderRoute(<OllTrainer />)).not.toThrow();
+  });
+
+  it('renders OLL trainer with a stored deck without throwing', () => {
+    window.localStorage.setItem(
+      '@cubing-tools/oll-trainer',
+      JSON.stringify({ '21': { data: { number: 21 }, deficiency: 2 } }),
+    );
+    expect(() => renderRoute(<OllTrainer />)).not.toThrow();
   });
 });
