@@ -1,0 +1,9 @@
+name = "cube"
+main = "index.ts"
+compatibility_date = "2026-06-01"
+
+# Bundle imported .wasm files as WebAssembly modules.
+[[rules]]
+type = "CompiledWasm"
+globs = ["**/*.wasm"]
+fallthrough = true
