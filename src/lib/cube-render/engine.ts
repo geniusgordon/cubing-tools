@@ -149,3 +149,21 @@ export function permuteSlots(alg: string): number[] {
   const ids = SLOTS.map((s) => s.index); // [0..53]
   return tokenize(alg).reduce(applyToken, ids);
 }
+
+const ROTATIONS = new Set(['x', 'y', 'z']);
+
+/** Drop leading/trailing whole-cube rotations (x/y/z) — the AUF/regrip
+ *  decorations alg sheets use (e.g. `(y2) M2 U M U2 M' U M2`) — so a case renders
+ *  in its canonical orientation and its permutation arrows aren't polluted by the
+ *  rotation. Rotations embedded mid-alg are left as-is (rare in last-layer algs). */
+export function stripOuterRotations(alg: string): string {
+  const tokens = tokenize(alg);
+  let lo = 0;
+  let hi = tokens.length;
+  while (lo < hi && ROTATIONS.has(tokens[lo].move)) lo++;
+  while (hi > lo && ROTATIONS.has(tokens[hi - 1].move)) hi--;
+  return tokens
+    .slice(lo, hi)
+    .map((t) => t.move + (t.amount === 2 ? '2' : t.amount === 3 ? "'" : ''))
+    .join(' ');
+}

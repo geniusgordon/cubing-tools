@@ -1,4 +1,4 @@
-import { permuteSlots } from './engine';
+import { permuteSlots, stripOuterRotations } from './engine';
 import { planSlotCenter } from './layout-plan';
 
 export interface Arrow {
@@ -13,9 +13,11 @@ const CORNER_SLOTS = [0, 2, 8, 6];
 const EDGE_SLOTS = [1, 5, 7, 3];
 
 /** Permutation arrows for a PLL case, in plan-view viewBox coords (0..100).
- *  Only meaningful for the plan view of a last-layer (orientation-preserving) case. */
+ *  Only meaningful for the plan view of a last-layer (orientation-preserving) case.
+ *  Whole-cube rotations (e.g. a leading `y2`) are stripped first so the arrows show
+ *  the clean LL exchange rather than the permutation composed with the rotation. */
 export function computePllArrows(alg: string): Arrow[] {
-  const origin = permuteSlots(alg); // origin[d] = slot whose sticker now sits at d
+  const origin = permuteSlots(stripOuterRotations(alg)); // origin[d] = slot whose sticker now sits at d
   const dest = new Array<number>(54); // dest[s] = where slot s's sticker went
   origin.forEach((src, d) => {
     dest[src] = d;
