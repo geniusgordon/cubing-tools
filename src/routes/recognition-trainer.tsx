@@ -1,11 +1,11 @@
-import { useCallback, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useState, type ReactNode } from 'react';
 import { AppHeader } from '@/components/app-header';
 import { CubeImage } from '@/components/cube-image';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { useEventListener, useSettings, useLocalStorage } from '@/hooks';
-import { generateCase, caseToString, randomChoice } from '@/lib/cube';
+import { useEventListener, useSettings, useDeficiencyDeck } from '@/hooks';
+import { generateCase, caseToString } from '@/lib/cube';
 import { ColorNeutrality } from '@/data/types';
 import type { AlgWithAuf, FlashCard, TestCase } from '@/data/types';
 
@@ -40,27 +40,14 @@ export function RecognitionTrainer({
 }: RecognitionTrainerProps) {
   const [settings, updateSettings] = useSettings();
 
-  const [flashCardMap, setFlashCardMap] = useLocalStorage<
-    Record<string, FlashCard<AlgWithAuf>>
-  >(flashCardName, defaultFlashCardMap);
-
-  const cases = useMemo(
-    () => Object.keys(defaultFlashCardMap),
-    [defaultFlashCardMap],
-  );
+  const deck = useDeficiencyDeck(flashCardName, defaultFlashCardMap, gamma);
 
   const pickCaseFromFlashCards = useCallback(
     (cn: ColorNeutrality) => {
-      const c = randomChoice(
-        cases,
-        // fall back to the default deficiency if a persisted localStorage map
-        // is missing a key (stale shape) — avoids reading `.deficiency` of undefined
-        cases.map((name) => flashCardMap[name]?.deficiency ?? 1),
-      );
-      const { data } = flashCardMap[c] ?? defaultFlashCardMap[c];
+      const { data } = deck.pick(Object.keys(defaultFlashCardMap));
       return generateCase(data, { cn, preAuf: data.preAuf });
     },
-    [cases, flashCardMap, defaultFlashCardMap],
+    [deck, defaultFlashCardMap],
   );
 
   const [currentCase, setCurrentCase] = useState<TestCase>(() =>
@@ -78,32 +65,10 @@ export function RecognitionTrainer({
 
   const takeGuess = useCallback(
     (guess: string) => {
-      // fall back to the default card when a persisted localStorage map
-      // predates a key (e.g. after the deck grows) — keeps guessing working
-      const flashCard =
-        flashCardMap[currentCase.alg.name] ??
-        defaultFlashCardMap[currentCase.alg.name];
-      if (!flashCard) {
-        return;
-      }
       setCurrentGuess(guess);
-      const isCorrect = checkIsCorrect(currentCase, guess);
-      const newDeficiency = isCorrect
-        ? flashCard.deficiency * (1 - gamma)
-        : flashCard.deficiency * (1 + gamma);
-      setFlashCardMap({
-        ...flashCardMap,
-        [currentCase.alg.name]: { ...flashCard, deficiency: newDeficiency },
-      });
+      deck.record(currentCase.alg.name, checkIsCorrect(currentCase, guess));
     },
-    [
-      currentCase,
-      flashCardMap,
-      defaultFlashCardMap,
-      gamma,
-      checkIsCorrect,
-      setFlashCardMap,
-    ],
+    [currentCase, deck, checkIsCorrect],
   );
 
   const handleKeyup = useCallback(
