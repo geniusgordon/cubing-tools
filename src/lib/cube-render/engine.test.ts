@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { SLOTS, SOLVED, applyAlg, applyCase } from './engine';
+import { SLOTS, SOLVED, applyAlg, applyCase, permuteSlots } from './engine';
 import { FACES } from './types';
 
 describe('slot table', () => {
@@ -105,5 +105,26 @@ describe('applyCase = inverse applied to solved', () => {
   });
   it('a non-trivial case is not solved', () => {
     expect(applyCase("R U R' U'")).not.toEqual(SOLVED);
+  });
+});
+
+describe('permuteSlots — forward slot-identity permutation', () => {
+  it('identity alg leaves every slot in place', () => {
+    expect(permuteSlots('')).toEqual(SLOTS.map((s) => s.index));
+  });
+
+  it('is always a permutation of 0..53', () => {
+    const out = permuteSlots("R U R' U'");
+    expect([...out].sort((a, b) => a - b)).toEqual(SLOTS.map((s) => s.index));
+  });
+
+  it('U^4 returns to identity', () => {
+    expect(permuteSlots('U U U U')).toEqual(SLOTS.map((s) => s.index));
+  });
+
+  it('out[d] is dest→origin: applying U moves slot 0 off its home', () => {
+    // After a single U, the sticker at U-slot 0 is no longer slot 0's own.
+    const out = permuteSlots('U');
+    expect(out[0]).not.toBe(0);
   });
 });

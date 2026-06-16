@@ -11,7 +11,9 @@
     "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "worker:dev": "wrangler dev -c worker/wrangler.toml",
+    "worker:deploy": "wrangler deploy -c worker/wrangler.toml"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -40,7 +42,9 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260616.1",
     "@eslint/js": "^10.0.1",
+    "@resvg/resvg-wasm": "^2.6.2",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
     "@types/node": "^24.12.3",
@@ -57,6 +61,7 @@
     "typescript": "~6.0.2",
     "typescript-eslint": "^8.59.2",
     "vite": "^8.0.12",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.8",
+    "wrangler": "^4.100.0"
   }
 }
