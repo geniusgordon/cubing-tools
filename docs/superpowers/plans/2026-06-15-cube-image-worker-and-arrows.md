@@ -724,9 +724,9 @@ git commit -m "feat(worker): cloudflare worker rasterizing cube SVGs to PNG"
 
 - [ ] **Step 1: Local smoke test with `wrangler dev`**
 
-From `worker/`, start a local dev server:
+Start a local dev server **from the repo root** (deps live in the root `node_modules`, so run wrangler from there and point it at the worker config — a `cd worker && pnpm exec wrangler` will fail to resolve the binary):
 ```bash
-cd worker && pnpm exec wrangler dev
+pnpm worker:dev      # = wrangler dev -c worker/wrangler.toml
 ```
 In another terminal, verify each output type:
 ```bash
@@ -752,10 +752,10 @@ Open the T-perm and a Ua-perm SVG (from Step 1's `fmt=svg` URLs, swapping the `c
 
 - [ ] **Step 3: Authenticate and deploy**
 
+Run **from the repo root**:
 ```bash
-cd worker
 pnpm exec wrangler login      # opens a browser for Cloudflare OAuth
-pnpm exec wrangler deploy
+pnpm worker:deploy            # = wrangler deploy -c worker/wrangler.toml
 ```
 Expected: deploy prints the public URL `https://cube.<account>.workers.dev`.
 
