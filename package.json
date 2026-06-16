@@ -8,11 +8,12 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "postbuild": "cp dist/index.html dist/404.html",
-    "preview": "pnpm run build && wrangler dev",
+    "preview": "vite preview",
     "lint": "eslint .",
     "test": "vitest run",
     "test:watch": "vitest",
-    "deploy": "pnpm run build && wrangler deploy"
+    "worker:dev": "wrangler dev -c worker/wrangler.toml",
+    "worker:deploy": "wrangler deploy -c worker/wrangler.toml"
   },
   "dependencies": {
     "@base-ui/react": "^1.5.0",
@@ -41,7 +42,6 @@
     "vaul": "^1.1.2"
   },
   "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.40.2",
     "@cloudflare/workers-types": "^4.20260616.1",
     "@eslint/js": "^10.0.1",
     "@resvg/resvg-wasm": "^2.6.2",
