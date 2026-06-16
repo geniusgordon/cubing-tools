@@ -113,16 +113,16 @@ export function tokenize(alg: string): Token[] {
   return tokens;
 }
 
-function applyToken(facelets: Facelets, token: Token): Facelets {
+function applyToken<T>(arr: T[], token: Token): T[] {
   const def = MOVES[token.move];
   const quarters = (def.cwq * token.amount) % 4;
-  if (quarters === 0) return facelets.slice();
-  const next = facelets.slice();
+  if (quarters === 0) return arr.slice();
+  const next = arr.slice();
   for (const s of SLOTS) {
     if (!def.layers.includes(s.pos[def.axis])) continue;
     const destKey = keyOf(rotN(s.pos, def.axis, quarters), rotN(s.normal, def.axis, quarters));
     const dest = SLOT_BY_KEY.get(destKey)!;
-    next[dest] = facelets[s.index];
+    next[dest] = arr[s.index];
   }
   return next;
 }
@@ -141,4 +141,11 @@ export function invert(alg: string): Token[] {
 /** Render a "case": the state that `alg` solves = inverse(alg) on solved. */
 export function applyCase(alg: string): Facelets {
   return invert(alg).reduce(applyToken, SOLVED);
+}
+
+/** Forward permutation of slot identities under `alg`.
+ *  Returns dest→origin: out[d] is the index of the slot whose sticker now sits at d. */
+export function permuteSlots(alg: string): number[] {
+  const ids = SLOTS.map((s) => s.index); // [0..53]
+  return tokenize(alg).reduce(applyToken, ids);
 }
