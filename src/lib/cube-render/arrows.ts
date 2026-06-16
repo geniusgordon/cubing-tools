@@ -4,6 +4,7 @@ import { planSlotCenter } from './layout-plan';
 export interface Arrow {
   from: [number, number];
   to: [number, number];
+  /** true = a 2-cycle swap drawn as one double-headed arrow; false = one directed arrow. */
   double: boolean;
 }
 
@@ -23,6 +24,12 @@ export function computePllArrows(alg: string): Arrow[] {
 }
 
 function cyclesToArrows(slots: number[], dest: number[]): Arrow[] {
+  const group = new Set(slots);
+  // Arrows are only meaningful when the group permutes within itself
+  // (true for orientation-preserving last-layer cases). A non-PLL input
+  // (e.g. a net cube rotation moving U off the top) escapes the group —
+  // degrade to no arrows rather than emit off-canvas coordinates.
+  if (slots.some((s) => !group.has(dest[s]))) return [];
   const arrows: Arrow[] = [];
   const seen = new Set<number>();
   for (const start of slots) {

@@ -40,4 +40,8 @@ describe('computePllArrows', () => {
       expect(isCorner(a.to) || isEdge(a.to)).toBe(true);
     }
   });
+
+  it('non-PLL input that moves U off the top → no arrows (graceful degrade)', () => {
+    expect(computePllArrows('x')).toEqual([]);
+  });
 });
