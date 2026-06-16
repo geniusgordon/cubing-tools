@@ -45,3 +45,10 @@ export function planLayout(colors: string[]): Cell[] {
   });
   return cells;
 }
+
+/** Center (x,y) of a U-face slot (index 0..8) in plan viewBox coords. */
+export function planSlotCenter(index: number): [number, number] {
+  const r = Math.floor(index / 3);
+  const c = index % 3;
+  return [ORIGIN + c * G + G / 2, ORIGIN + r * G + G / 2];
+}

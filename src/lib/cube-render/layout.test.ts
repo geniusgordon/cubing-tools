@@ -29,6 +29,25 @@ describe('planLayout', () => {
   });
 });
 
+import { planSlotCenter } from './layout-plan';
+
+describe('planSlotCenter — U-face slot centers', () => {
+  // Geometry from layout-plan.ts: G=24, U_SIZE=72, ORIGIN=(100-72)/2=14.
+  // Slot 0 = top-left U cell, center at ORIGIN + G/2 = 14 + 12 = 26.
+  it('slot 0 (top-left) center is [26, 26]', () => {
+    expect(planSlotCenter(0)).toEqual([26, 26]);
+  });
+
+  it('slot 4 (center) is the viewBox center [50, 50]', () => {
+    expect(planSlotCenter(4)).toEqual([50, 50]);
+  });
+
+  it('slot 8 (bottom-right) center is [74, 74]', () => {
+    // r=2,c=2 → 14 + 2*24 + 12 = 74.
+    expect(planSlotCenter(8)).toEqual([74, 74]);
+  });
+});
+
 import { cube3dLayout } from './layout-3d';
 
 describe('cube3dLayout', () => {
