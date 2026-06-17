@@ -187,48 +187,38 @@ git commit -m "feat(data): add 57-case OLL dataset with categories"
 
 ## Task 2: OLL validity verifier (catches wrong algs)
 
-A genuine OLL case = F2L solved + last-layer permutation solved + only orientation varies. This test proves both invariants for every alg, independent of any external source. It catches typos that disturb F2L or mis-permute the last layer.
+**Important correctness note:** OLL algorithms orient the last layer but do **not** preserve last-layer *permutation* (PLL fixes permutation afterward — textbook CFOP). So the only invariant that holds for `applyCase(ollAlg)` is **F2L solved** (the first two layers untouched). A permutation check is wrong and would reject valid OLLs. Permutation also doesn't matter for the OLL image: the `'oll'` render stage grays everything that isn't yellow, so only the orientation pattern shows — that pattern is verified in Task 3.
+
+This F2L check still catches the typos that matter: a stray non-LL move (e.g. a wide `d`/`r`+`M` mismatch) disturbs F2L and fails here. It caught OLL 52 and 57 in the original transcription.
 
 **Files:**
 - Test: `src/data/oll-validity.test.ts`
 
-- [ ] **Step 1: Write the validity test (failing if any alg is wrong)**
+- [ ] **Step 1: Write the validity test (failing if any alg disturbs F2L)**
 
-Create `src/data/oll-validity.test.ts`:
+Create `src/data/oll-validity.test.ts`. The last layer is derived generically from the engine's `SLOTS` geometry (a facelet is last-layer iff its cubie's 3D y-coordinate `pos[1] === 1`):
 
 ```ts
 import { describe, expect, it } from 'vitest';
 import { applyCase, SOLVED } from '@/lib/cube-render';
+import { SLOTS } from '@/lib/cube-render/engine';
 import { ollCases } from './oll';
 
-// Facelet index layout: U=0-8, R=9-17, F=18-26, D=27-35, L=36-44, B=45-53.
-const U_FACE = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-// Top row of each side face (the non-U stickers of last-layer pieces).
-const SIDE_TOPS = [9, 10, 11, 18, 19, 20, 45, 46, 47, 36, 37, 38];
-const LL = new Set([...U_FACE, ...SIDE_TOPS]);
-// Each side-top index -> the face color that index must be (or 'U' if twisted).
-const SIDE_TOP_HOME: Record<number, string> = {
-  9: 'R', 10: 'R', 11: 'R',
-  18: 'F', 19: 'F', 20: 'F',
-  45: 'B', 46: 'B', 47: 'B',
-  36: 'L', 37: 'L', 38: 'L',
-};
+// A genuine OLL algorithm only manipulates the last layer, so applying it to a
+// solved cube must leave the first two layers (F2L) untouched. It does NOT
+// preserve last-layer *permutation* — OLL orients; PLL permutes afterward — so
+// we only assert F2L here. The yellow-orientation pattern (the part that
+// actually matters for the OLL image) is verified in oll-distinct.test.ts.
+const yOf = new Map(SLOTS.map((s) => [s.index, s.pos[1]]));
+const isLastLayer = (i: number) => yOf.get(i) === 1;
 
-describe('oll algs are valid OLL cases', () => {
+describe('oll algs keep F2L solved', () => {
   for (const c of ollCases) {
-    it(`OLL ${c.number} (${c.name}) keeps F2L solved`, () => {
+    it(`OLL ${c.number} (${c.name})`, () => {
       const state = applyCase(c.alg);
       for (let i = 0; i < 54; i++) {
-        if (LL.has(i)) continue;
+        if (isLastLayer(i)) continue;
         expect(state[i], `facelet ${i}`).toBe(SOLVED[i]);
-      }
-    });
-
-    it(`OLL ${c.number} (${c.name}) keeps last-layer permutation solved`, () => {
-      const state = applyCase(c.alg);
-      for (const [idx, home] of Object.entries(SIDE_TOP_HOME)) {
-        const color = state[Number(idx)];
-        expect([home, 'U'], `facelet ${idx} = ${color}`).toContain(color);
       }
     });
   }
@@ -238,7 +228,11 @@ describe('oll algs are valid OLL cases', () => {
 - [ ] **Step 2: Run the validity test**
 
 Run: `pnpm test -- src/data/oll-validity.test.ts`
-Expected: PASS for all 57. If any case FAILS, the listed alg is wrong — replace it with the first algorithm for that OLL number from **algdb.net/oll**, then re-run until green. Do not weaken the test.
+Expected: PASS for all 57. If a case FAILS, its alg disturbs F2L (a transcription error) — replace it with a standard algorithm for that OLL number from **algdb.net/oll** or the cubeskills OLL PDF, then re-run until green. Do not weaken the test.
+
+Known fixes already applied to the original transcription:
+- OLL 52: `R U R' U R d' R U' R' F'` → `R' U' R U' R' U F' U F R`
+- OLL 57: `R U R' U' M' U r U' r'` → `R U R' U' r R' U R U' r'`
 
 - [ ] **Step 3: Commit**
 
