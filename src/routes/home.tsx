@@ -32,6 +32,13 @@ const TRAINERS = [
     view: 'plan' as const,
     stage: 'll',
   },
+  {
+    title: 'OLL Trainer',
+    to: '/trainers/oll',
+    alg: "R U R' U R U2 R'",
+    view: 'plan' as const,
+    stage: 'oll',
+  },
 ];
 
 export default function Home() {
