@@ -12,11 +12,11 @@ const TRAINERS = [
     stage: 'll',
   },
   {
-    title: 'COLL Recognition Trainer',
-    to: '/trainers/recognition/coll',
-    alg: '',
+    title: 'OLL Trainer',
+    to: '/trainers/oll',
+    alg: "R U R' U R U2 R'",
     view: 'plan' as const,
-    stage: 'coll',
+    stage: 'oll',
   },
   {
     title: 'Cross Trainer',
@@ -26,18 +26,18 @@ const TRAINERS = [
     stage: 'cross-x2',
   },
   {
+    title: 'COLL Recognition Trainer',
+    to: '/trainers/recognition/coll',
+    alg: '',
+    view: 'plan' as const,
+    stage: 'coll',
+  },
+  {
     title: 'ZBLL Trainer',
     to: '/trainers/zbll',
     alg: "(R U R' U') (R U' R U2 R2) (U' R U R' U') (R2 U' R2 U')",
     view: 'plan' as const,
     stage: 'll',
-  },
-  {
-    title: 'OLL Trainer',
-    to: '/trainers/oll',
-    alg: "R U R' U R U2 R'",
-    view: 'plan' as const,
-    stage: 'oll',
   },
 ];
 
